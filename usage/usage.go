@@ -44,6 +44,7 @@ type Checker struct {
 	once     sync.Once
 }
 
+//noinspection GoErrorStringFormat
 var CheckDisabledError = errors.New("Version check disabled by GL_DISABLE_VERSION_CHECK")
 
 func NewChecker(project, version string) *Checker {

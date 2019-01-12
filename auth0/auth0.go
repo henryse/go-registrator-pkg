@@ -2,6 +2,7 @@ package auth0
 
 import (
 	"bytes"
+	"context"
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
@@ -64,11 +65,11 @@ func (c *Client) oauthConfig() *oauth2.Config {
 }
 
 func (c *Client) NewToken(code string) (*oauth2.Token, error) {
-	return c.oauthConfig().Exchange(oauth2.NoContext, code)
+	return c.oauthConfig().Exchange(context.TODO(), code)
 }
 
 func (c *Client) get(token *oauth2.Token, url string) (map[string]interface{}, error) {
-	client := c.oauthConfig().Client(oauth2.NoContext, token)
+	client := c.oauthConfig().Client(context.TODO(), token)
 	resp, err := client.Get(url)
 	if err != nil {
 		return nil, err

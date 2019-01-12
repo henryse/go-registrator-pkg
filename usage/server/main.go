@@ -1,6 +1,7 @@
 package main
 
 import (
+	"context"
 	"errors"
 	"flag"
 	"log"
@@ -37,7 +38,7 @@ func (t *UsageTracker) Track(pv *TrackingEvent) error {
 }
 
 func (t *UsageTracker) GetLatest(pv *usage.ProjectVersion) (*usage.ProjectVersion, error) {
-	release, _, err := t.githubClient.Repositories.GetLatestRelease(t.githubProject, pv.Project)
+	release, _, err := t.githubClient.Repositories.GetLatestRelease(context.TODO(), t.githubProject, pv.Project)
 	if err != nil {
 		// TODO look for 404 errors
 		// 404 can mean that the project doesn't exist, or it has no releases yet
@@ -136,7 +137,7 @@ func main() {
 	var authClient *http.Client
 
 	if githubToken != "" {
-		authClient = oauth2.NewClient(oauth2.NoContext, oauth2.StaticTokenSource(
+		authClient = oauth2.NewClient(context.TODO(), oauth2.StaticTokenSource(
 			&oauth2.Token{AccessToken: githubToken},
 		))
 	}
